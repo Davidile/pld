@@ -99,7 +99,7 @@ def get_reset_password_form():
   return render_template('reset_password_email_sent.html',email=email)
 
 def send_reset_email(email,user,token):
-  reset_link=f"https://portal.mugoma.tech/update_password?token={token}"
+  reset_link=f" https://portal.mugoma.tech/update_password?token={token}"
   msg=Message('Password Reset instructions ',sender=('Mugoma_Dev','mugomadavid24@gmail.com'),recipients=[email])
   msg.body=f"Hello {user},\n\n I received a request to reset your password.Kindly click the below link to reset your password:\n\n{reset_link}.\n\nIf you didn't request a password reset, please ignore this email.\n\n Best regards ,\n Mugoma David."
   Mail.send(msg)
@@ -175,57 +175,4 @@ if __name__=="__main__":
    with app.app_context():
         Base.metadata.create_all(bind=engine)
 
-   app.run(host="0.0.0.0",debug=True)
-
-
-
-
-@app.route("/logout")
-def logout():
-  if 'username' in flask_session:
-   flask_session.pop('username',None)
-  return redirect(url_for('base'))
-
-@app.route("/about")
-def about():
- return render_template('about.html')
-
-@app.route("/track_session")
-def track_session():
-  #username=flask_session.get('username')
- # user_id=flask_session.get('id')
- # if username and user_id:
-  posts=db_session.query(Post).all()
-  
-  return render_template('track.html',posts=posts)
-
-
-@app.route("/add_post", methods=['POST','GET'])
-def add_post():
-  if request.method=="POST":
-    topic=request.form.get('topic')
-    mentor=request.form.get('mentor')
-    date_str=request.form.get('date_str')
-    time_str=request.form.get('time_str')
-    description=request.form.get('description')
-    duration_str=request.form.get('duration_str')
-
-    if "id" in flask_session:
-      user_id=flask_session['id']
-      new_post=Post(mentor=mentor,topic=topic,date_str=date_str,time_str=time_str,description=description,duration_str=duration_str,user_id=user_id)
-      db_session.add(new_post)
-      db_session.commit()
-      db_session.close()
-      return f"Submision send successfully."
-    else:
-      return f" user not found!"
-  return render_template("post.html")
-
-
-if __name__=="__main__":
- 
-   with app.app_context():
-        Base.metadata.create_all(bind=engine)
-
-   app.run(host="0.0.0.0",port=7777 , debug=True)
-
+   app.run(host="0.0.0.0",port=7000,debug=True)
