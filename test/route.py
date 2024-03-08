@@ -227,5 +227,5 @@ if __name__=="__main__":
    with app.app_context():
         Base.metadata.create_all(bind=engine)
 
-   app.run(host="0.0.0.0",debug=True)
+   app.run(host="0.0.0.0",port=7777 , debug=True)
 
